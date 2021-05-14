@@ -29,7 +29,6 @@ class App extends Component {
         <Menu />
         <div className="container">
           <div className="row">
-          
             {this.showContent(routes)}
           </div>
         </div>

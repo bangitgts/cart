@@ -3,38 +3,29 @@ import { Component } from "react";
 import ProductItem from "../../components/ProductItem/ProductItem";
 import ProductList from "../../components/ProductList/ProductList";
 import { connect } from "react-redux";
-import callApi from "../../utils/apiCaller";
+
+import { Link } from "react-router-dom";
+import { actFetchProductsRequest } from "../../actions/actions";
 class ProductListPage extends Component {
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
-      products: []
-    }
+      products: [1,2,3]
+    };
   }
-  componentDidMount(){
-    // axios({
-    //   method: 'GET',
-    //   url: 'http://localhost:3000/products',
-    //   data: 'null'
-    // })
-    //   .then(res => {
-    //     console.log(res.data)
-    //     this.setState({
-    //       products : res.data
-    //     })
-    //   })
-    //   .catch(err => {console.log(err)});
-    callApi('products','GET',null).then(res => this.setState({
-      products: res.data
-    }))
+  componentDidMount() {
+    this.props.fetchAllProducts();
   }
   render() {
-    let {products}  = this.state;
+    let { products } = this.props;
     return (
       <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <button type="button" className="btn btn-default">
+        {/* <button type="button" className="btn btn-default">
           Thêm Sản Phẩm
-        </button>
+        </button> */}
+        <Link to="/product/add" className="btn btn-default">
+          Thêm Sản Phẩm
+        </Link>
         <ProductList>{this.showProducts(products)}</ProductList>
       </div>
     );
@@ -62,5 +53,12 @@ const mapStateToProps = (state) => {
     products: state.products,
   };
 };
+const mapDispatchToProps = (dispatch, props) => {
+  return {
+    fetchAllProducts: () => {
+      dispatch(actFetchProductsRequest());
+    },
+  };
+};
 
-export default connect(mapStateToProps, null)(ProductListPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductListPage);

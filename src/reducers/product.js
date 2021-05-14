@@ -1,3 +1,5 @@
+import * as types from "../constants/ActionTypes";
+
 var initialState = [
     {
         id: 1,
@@ -20,6 +22,9 @@ var initialState = [
 ];
 const products = (state = initialState,action) =>{
     switch(action.type){
+        case types.FETCH_API:
+            state = action.products;
+            return [...state]
         default:return [...state]
     }
 }
