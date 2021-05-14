@@ -2,35 +2,42 @@
 import { Component } from "react";
 import ProductItem from "../../components/ProductItem/ProductItem";
 import ProductList from "../../components/ProductList/ProductList";
-
+import { connect } from "react-redux";
 class ProductListPage extends Component {
   render() {
-    var product = [];
+    var { products } = this.props;
     return (
-    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-      <button type="button" className="btn btn-default">
+      <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <button type="button" className="btn btn-default">
           Thêm Sản Phẩm
-      </button>
-      <ProductList>
-        {this.showProducts(product)}
-      </ProductList>
-    </div>
+        </button>
+        <ProductList>{this.showProducts(products)}</ProductList>
+      </div>
     );
   }
-  showProducts(product){
+
+  showProducts(products) {
     var result = null;
-    if(product.length > 0){
-      result = product.map((product,index)=>{
-        return(
+    if (products.length > 0) {
+      result = products.map((product, index) => {
+        return (
           <ProductItem
             key={index}
             product={product}
             index={index}
+            onDelete={this.onDelete}
           />
-        )
-      })
+        );
+      });
     }
-    return null;
+    return result;
   }
 }
-export default ProductListPage;
+
+const mapStateToProps = (state) => {
+  return {
+    products: state.products,
+  };
+};
+
+export default connect(mapStateToProps, null)(ProductListPage);
